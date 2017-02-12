@@ -1,0 +1,153 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="coursework.com.braingame.GameFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:text="@string/three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/button10"
+            android:layout_toEndOf="@+id/button10"
+            android:id="@+id/button11"
+            style="@style/Widget.AppCompat.Button.Small" />
+
+        <Button
+            android:text="@string/nine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button17"
+            android:layout_alignBaseline="@+id/button16"
+            android:layout_alignBottom="@+id/button16"
+            android:layout_toEndOf="@+id/button16"
+            style="@style/Widget.AppCompat.Button.Small" />
+
+        <Button
+            android:text="@string/five"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button13"
+            android:layout_alignBaseline="@+id/button12"
+            android:layout_alignBottom="@+id/button12"
+            android:layout_toEndOf="@+id/button12"
+            style="@style/Widget.AppCompat.Button.Small" />
+
+        <Button
+            android:text="@string/four"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button12"
+            android:layout_marginTop="13dp"
+            android:layout_below="@+id/button10"
+            android:layout_alignStart="@+id/button5"
+            style="@style/Widget.AppCompat.Button.Small" />
+
+        <Button
+            android:text="@string/seven"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button15"
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/button13"
+            android:layout_toStartOf="@+id/button16"
+            style="@style/Widget.AppCompat.Button.Small" />
+
+        <Button
+            android:text="@string/del"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:id="@+id/button18"
+            android:layout_below="@+id/button15"
+            android:layout_alignStart="@+id/button15"
+            style="@style/Widget.AppCompat.Button.Small" />
+
+        <Button
+            android:text="@string/zero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button19"
+            android:layout_alignBaseline="@+id/button18"
+            android:layout_alignBottom="@+id/button18"
+            android:layout_toEndOf="@+id/button18"
+            style="@style/Widget.AppCompat.Button.Small" />
+
+        <Button
+            android:text="@string/hash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/button19"
+            android:layout_toEndOf="@+id/button19"
+            android:id="@+id/button20"
+            style="@style/Widget.AppCompat.Button.Small" />
+
+        <TextView
+            android:text="@string/guess_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="57dp"
+            android:id="@+id/textView"
+            android:textAppearance="@android:style/TextAppearance"
+            android:textSize="24sp"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/button10"
+            android:layout_marginEnd="14dp" />
+
+        <Button
+            android:text="@string/six"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button14"
+            android:layout_alignBaseline="@+id/button13"
+            android:layout_alignBottom="@+id/button13"
+            android:layout_toEndOf="@+id/button13"
+            style="@style/Widget.AppCompat.Button.Small" />
+
+        <Button
+            android:text="@string/eight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button16"
+            android:layout_alignBaseline="@+id/button15"
+            android:layout_alignBottom="@+id/button15"
+            android:layout_toEndOf="@+id/button12"
+            style="@style/Widget.AppCompat.Button.Small" />
+
+        <Button
+            android:text="@string/minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/button20"
+            android:layout_toEndOf="@+id/button20"
+            android:id="@+id/button21"
+            style="@style/Widget.AppCompat.Button.Small" />
+
+        <Button
+            android:text="@string/two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button10"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_alignBaseline="@+id/button5"
+            android:layout_alignBottom="@+id/button5"
+            android:layout_toEndOf="@+id/button5" />
+
+        <Button
+            android:text="@string/one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="96dp"
+            android:layout_marginTop="130dp"
+            android:id="@+id/button5"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+</FrameLayout>
