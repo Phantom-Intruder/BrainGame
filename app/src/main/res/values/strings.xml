@@ -21,6 +21,9 @@
     <string name="del">DEL</string>
     <string name="hash">#</string>
     <string name="minus">-</string>
-    <string name="question_mark">?</string>
+    <string name="question_mark">\?</string>
     <string name="guess_text">Guess:</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

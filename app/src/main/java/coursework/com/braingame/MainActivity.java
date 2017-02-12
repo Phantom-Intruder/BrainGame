@@ -1,10 +1,12 @@
 package coursework.com.braingame;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,16 +16,23 @@ public class MainActivity extends AppCompatActivity {
 
     //Main screen buttons
     public void newGameButtonClicked(View view) {
-
+        Fragment newGameFragment = new LevelFragment();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, newGameFragment);
+        ft.addToBackStack(null);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
     }
-    public void exitButtonClicked(View view) {
+
+    public void continueButtonClicked(View view) {
     }
 
     public void aboutButtonClicked(View view) {
     }
 
-    public void continueButtonClicked(View view) {
+    public void exitButtonClicked(View view) {
     }
+
 
     //Level screen buttons
     public void noviceButtonClicked(View view) {

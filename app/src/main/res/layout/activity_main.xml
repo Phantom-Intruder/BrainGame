@@ -10,43 +10,58 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="coursework.com.braingame.MainActivity">
 
-    <Button
-        android:text="@string/continue_game"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        android:id="@+id/button"
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="continueButtonClicked"/>
+        android:layout_alignParentStart="true">
 
-    <Button
-        android:text="@string/new_game"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="49dp"
-        android:id="@+id/button2"
-        android:layout_below="@+id/button"
-        android:layout_alignStart="@+id/button"
-        android:onClick="newGameButtonClicked"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <Button
-        android:text="@string/exit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button4"
-        android:layout_below="@+id/button3"
-        android:layout_alignStart="@+id/button3"
-        android:layout_marginTop="48dp"
-        android:onClick="exitButtonClicked"/>
+            <Button
+                android:text="@string/continue_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="88dp"
+                android:id="@+id/button"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:onClick="continueButtonClicked"/>
 
-    <Button
-        android:text="@string/about"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="46dp"
-        android:id="@+id/button3"
-        android:layout_below="@+id/button2"
-        android:layout_alignStart="@+id/button2"
-        android:onClick="aboutButtonClicked"/>
+            <Button
+                android:text="@string/new_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="49dp"
+                android:id="@+id/button2"
+                android:layout_below="@+id/button"
+                android:layout_alignStart="@+id/button"
+                android:onClick="newGameButtonClicked"/>
+
+            <Button
+                android:text="@string/exit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button4"
+                android:layout_below="@+id/button3"
+                android:layout_alignStart="@+id/button3"
+                android:layout_marginTop="48dp"
+                android:onClick="exitButtonClicked"/>
+
+            <Button
+                android:text="@string/about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="46dp"
+                android:id="@+id/button3"
+                android:layout_below="@+id/button2"
+                android:layout_alignStart="@+id/button2"
+                android:onClick="aboutButtonClicked"/>
+        </RelativeLayout>
+
+    </FrameLayout>
+
 </RelativeLayout>
