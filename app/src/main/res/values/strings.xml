@@ -6,6 +6,7 @@
     <string name="exit">Exit</string>
     <string name="novice">Novice</string>
     <string name="easy">Easy</string>
+    <string name="ok">OK</string>
     <string name="medium">Medium</string>
     <string name="guru">Guru</string>
     <string name="zero">0</string>
@@ -23,7 +24,11 @@
     <string name="minus">-</string>
     <string name="question_mark">\?</string>
     <string name="guess_text">Guess:</string>
-
+    <string name="preferences">Preferences</string>
+    <string name="hints">Hints</string>
+    <string name="about_para">You shall be presented with an mathematical problem, which will depend on the level of skill you choose. You must type in the answer to the questions within the time limit. You may use the hints option in the preferences menu to help you with the game.</string>
+    <string name="time_remaining">Time Remaining</string>
+    <string name="secs">secs</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,95 +1,71 @@
 package coursework.com.braingame;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.app.Activity;
+
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
+    private Toolbar mToolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        PreferencesActivity.setHintsOnOrOff(false);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        //TODO: Preferences
+        Intent intent = new Intent(this, PreferencesActivity.class);
+        startActivity(intent);
+        return true;
     }
 
     //Main screen buttons
     public void newGameButtonClicked(View view) {
-        Fragment newGameFragment = new LevelFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, newGameFragment);
-        ft.addToBackStack(null);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.commit();
+        Intent intent = new Intent(this, LevelActivity.class);
+        startActivity(intent);
     }
 
     public void continueButtonClicked(View view) {
+        //TODO: Start saved game
     }
 
     public void aboutButtonClicked(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Instructions");
+        builder.setMessage("You shall be presented with an mathematical problem, which will depend on the level of skill you choose.\n\nYou must type in the answer to the questions within the time limit.\n\nYou may use the hints option in the preferences menu to help you with the game.");
+        builder.setPositiveButton("OK", null);
+        builder.show();
     }
 
     public void exitButtonClicked(View view) {
-    }
-
-
-    //Level screen buttons
-    public void noviceButtonClicked(View view) {
-    }
-
-    public void easyButtonClicked(View view) {
-    }
-
-    public void mediumButtonClicked(View view) {
-    }
-
-    public void guruButtonClicked(View view) {
-    }
-
-    //Number pad buttons
-    public void onButtonZeroClicked(View view) {
-    }
-
-    public void onButtonOneClicked(View view) {
-    }
-
-    public void onButtonTwoClicked(View view) {
-    }
-
-    public void onButtonThreeClicked(View view) {
-    }
-
-    public void onButtonFourClicked(View view) {
-    }
-
-    public void onButtonFiveClicked(View view) {
-    }
-
-    public void onButtonSixClicked(View view) {
-    }
-
-    public void onButtonSevenClicked(View view) {
-    }
-
-    public void onButtonEightClicked(View view) {
-    }
-
-    public void onButtonNineClicked(View view) {
-    }
-
-    public void onButtonDelClicked(View view) {
-    }
-
-    public void onButtonHashClicked(View view) {
+        Intent intent = new Intent(this, ExitActivity.class);
+        startActivity(intent);
+        intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 
 
-
-
-    public void onButtonMinusClicked(View view) {
-    }
 
 
 }

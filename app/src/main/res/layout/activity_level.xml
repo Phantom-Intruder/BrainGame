@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_level"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="coursework.com.braingame.LevelActivity">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+    </LinearLayout>
+
+    <Button
+        android:text="@string/medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:id="@+id/button8"
+        android:layout_below="@+id/button7"
+        android:layout_alignStart="@+id/button7"
+        android:onClick="mediumButtonClicked"/>
+
+    <Button
+        android:text="@string/guru"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button9"
+        android:layout_below="@+id/button8"
+        android:layout_alignStart="@+id/button8"
+        android:layout_marginTop="51dp"
+        android:onClick="guruButtonClicked"/>
+
+    <Button
+        android:text="@string/novice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="117dp"
+        android:id="@+id/button6"
+        android:onClick="noviceButtonClicked"
+        android:layout_below="@+id/linearLayout"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="@string/easy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="58dp"
+        android:id="@+id/button7"
+        android:onClick="easyButtonClicked"
+        android:layout_below="@+id/button6"
+        android:layout_alignStart="@+id/button6" />
+</RelativeLayout>
