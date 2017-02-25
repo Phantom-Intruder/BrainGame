@@ -27,9 +27,6 @@
         <activity
             android:name=".AboutActivity"
             android:theme="@style/Theme.AppCompat.Dialog" />
-        <activity
-            android:name=".ExitActivity"
-            android:theme="@style/Theme.AppCompat.Dialog" />
         <activity android:name=".ScoreActivity"></activity>
     </application>
 

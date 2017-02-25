@@ -14,6 +14,9 @@ public class Player implements Serializable {
     }
 
 
+    public void setPlayerLevel(String playerLevel){
+        this.playerLevel = playerLevel;
+    }
 
     public String getPlayerLevel() {
         return playerLevel;

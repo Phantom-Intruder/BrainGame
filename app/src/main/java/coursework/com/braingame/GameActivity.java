@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import static android.content.ContentValues.TAG;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 
@@ -30,7 +31,7 @@ public class GameActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private int levelOfProgressbarFilled;
     private TextView textView;
-    private  boolean hashButtonClicked = false;
+    private int numberOfhashButtonClicks = 0;
     private int timerRemaining;
 
     @Override
@@ -263,22 +264,23 @@ public class GameActivity extends AppCompatActivity {
     public void onButtonDelClicked(View view) {
         editText.setSelection(editText.getText().length());
         String textOnEditText = String.valueOf(editText.getText());
-        if ((textOnEditText.charAt(textOnEditText.length()-1))=='=') {
-            //Do nothing
-        }else{
+        if ((textOnEditText.charAt(textOnEditText.length()-1))!='=') {
             textFieldInputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
         }
     }
 
     public void onButtonHashClicked(View view) {
-        if (hashButtonClicked){
+        if ((numberOfhashButtonClicks >= 1)&&(!PreferencesActivity.isHintsOnOrOff()) ){
             moveToNextQuestion();
         }else{
-            hashButtonClicked = true;
+            if (numberOfhashButtonClicks == 4){
+                timer.cancel();
+                moveToNextQuestion();
+            }else{
+                numberOfhashButtonClicks++;
+            }
         }
-        if (PreferencesActivity.isHintsOnOrOff()){
-
-        }else{
+        if (!PreferencesActivity.isHintsOnOrOff()) {
             timer.cancel();
         }
         validateAnswer();
@@ -287,28 +289,37 @@ public class GameActivity extends AppCompatActivity {
     private void validateAnswer() {
         String textOnEditText = String.valueOf(editText.getText());
         String[] partsOfSplittedAnswer = textOnEditText.split("=");
-        String answerGiven = partsOfSplittedAnswer[1];
-        answerGiven = answerGiven.trim();
-        int answer = Integer.parseInt(answerGiven);
-        TextView result = ((TextView) findViewById(R.id.textView6));
-        if (answer == total){
-            //correct
-            result.setTextColor(Color.GREEN);
-            result.setText(R.string.correct_answer);
-            calculateScore();
-        }else{
-            //wrong
-            result.setTextColor(Color.RED);
-            result.setText(R.string.wrong_answer);
-            if (PreferencesActivity.isHintsOnOrOff()) {
-                if (answer < total){
-                    TextView textViewHints = ((TextView)findViewById(R.id.textView3));
-                    textViewHints.setText(R.string.greater);
-                }else{
-                    TextView textViewHints= ((TextView)findViewById(R.id.textView3));
-                    textViewHints.setText(R.string.lesser);
+        TextView result = null;
+        try{
+            String answerGiven = partsOfSplittedAnswer[1];
+            answerGiven = answerGiven.trim();
+            int answer = Integer.parseInt(answerGiven);
+            result = ((TextView) findViewById(R.id.textView6));
+            if (answer == total) {
+                //correct
+                result.setTextColor(Color.GREEN);
+                result.setText(R.string.correct_answer);
+                timer.cancel();
+                numberOfhashButtonClicks = 4;
+                calculateScore();
+            } else {
+                //wrong
+                result.setTextColor(Color.RED);
+                result.setText(R.string.wrong_answer);
+                if (PreferencesActivity.isHintsOnOrOff()) {
+                    if (answer < total) {
+                        TextView textViewHints = ((TextView) findViewById(R.id.textView3));
+                        textViewHints.setText(R.string.greater);
+                    } else {
+                        TextView textViewHints = ((TextView) findViewById(R.id.textView3));
+                        textViewHints.setText(R.string.lesser);
+                    }
                 }
             }
+        }catch (Exception e){
+            result = ((TextView) findViewById(R.id.textView6));
+            result.setTextColor(Color.BLUE);
+            result.setText(R.string.unanswered);
         }
     }
 
@@ -316,6 +327,7 @@ public class GameActivity extends AppCompatActivity {
         int score;
         if (timerRemaining == 10){
             score = 100;
+            LevelActivity.player.setScore(LevelActivity.player.getScore()+score);
         }else{
             score = (100/(10-timerRemaining));
             LevelActivity.player.setScore(LevelActivity.player.getScore()+score);
