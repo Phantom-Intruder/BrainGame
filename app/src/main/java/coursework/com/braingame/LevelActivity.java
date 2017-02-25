@@ -1,6 +1,5 @@
 package coursework.com.braingame;
 
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;

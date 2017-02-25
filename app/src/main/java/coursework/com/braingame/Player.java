@@ -4,20 +4,19 @@ import java.io.Serializable;
 
 public class Player implements Serializable {
     private String playerLevel;
-    private int questionNumber;
+    private int questionNumber=0;
     private boolean hintsOnOrOff;
+    private int score =0;
 
     Player(String playerLevel, boolean hintsOnOrOff){
         this.playerLevel = playerLevel;
         this.setHintsOnOrOff(hintsOnOrOff);
     }
 
+
+
     public String getPlayerLevel() {
         return playerLevel;
-    }
-
-    public void setPlayerLevel(String playerLevel) {
-        this.playerLevel = playerLevel;
     }
 
     public int getQuestionNumber() {
@@ -34,5 +33,13 @@ public class Player implements Serializable {
 
     public void setHintsOnOrOff(boolean hintsOnOrOff) {
         this.hintsOnOrOff = hintsOnOrOff;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

@@ -31,4 +31,12 @@
     <string name="secs">secs</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="greater">Greater</string>
+    <string name="lesser">Lesser</string>
+    <string name="correct_answer">CORRECT</string>
+    <string name="wrong_answer">WRONG</string>
+    <string name="score">Score</string>
+    <string name="play_again">Play again</string>
+    <string name="change_level">Change level</string>
+    <string name="main_menu">Main menu</string>
 </resources>

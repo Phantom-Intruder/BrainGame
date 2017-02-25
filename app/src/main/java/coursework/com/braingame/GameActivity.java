@@ -1,7 +1,9 @@
 package coursework.com.braingame;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -12,14 +14,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.BaseInputConnection;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import static android.content.ContentValues.TAG;
+
 import java.util.Random;
 
 
+
 public class GameActivity extends AppCompatActivity {
-    EditText editText;
-    BaseInputConnection textFieldInputConnection;
+    private EditText editText;
+    private BaseInputConnection textFieldInputConnection;
+    private int total;
+    private static CountDownTimer timer;
+    private ProgressBar progressBar;
+    private int levelOfProgressbarFilled;
+    private TextView textView;
+    private  boolean hashButtonClicked = false;
+    private int timerRemaining;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +43,8 @@ public class GameActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Play game");
         editText = (EditText)findViewById(R.id.editText);
         editText.setInputType(InputType.TYPE_NULL);
+        LevelActivity.player.setQuestionNumber(LevelActivity.player.getQuestionNumber()+1);
+        Log.d(TAG, "TotalFor: player question " + LevelActivity.player.getQuestionNumber());
         textFieldInputConnection = new BaseInputConnection(editText, true);
         if (android.os.Build.VERSION.SDK_INT >= 11)
         {
@@ -56,31 +70,44 @@ public class GameActivity extends AppCompatActivity {
                 guru();
                 break;
         }
+        timerMethod();
     }
 
+    private void timerMethod() {
+        levelOfProgressbarFilled = 0;
+
+        progressBar = (ProgressBar)findViewById(R.id.progressBar5);
+        textView = ((TextView)findViewById(R.id.textView9));
+        timer = new CountDownTimer(10000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                levelOfProgressbarFilled += 10;
+                progressBar.setProgress(levelOfProgressbarFilled);
+                timerRemaining = (10 - levelOfProgressbarFilled / 10);
+                textView.setText(String.format("%d", timerRemaining));
+            }
+            public void onFinish() {
+                moveToNextQuestion();
+            }
+
+        }.start();
+    }
+
+    private void moveToNextQuestion() {
+        if (LevelActivity.player.getQuestionNumber() == 4){
+            Intent intent = new Intent(this, ScoreActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        }else{
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        }
+    }
 
     private void novice() {
         generateDataToShowOnScreen(2,2);
-        //validateAnswer(firstNumber, secondNumber);
-    }
-
-    private void validateAnswer(int firstNumber, int secondNumber) {
-        int symbolIndex = generateSymbol();
-        int answer =0;
-        switch (symbolIndex){
-            case 1:
-                answer = firstNumber + secondNumber;
-                break;
-            case 2:
-                answer = firstNumber - secondNumber;
-                break;
-            case 3:
-                answer = firstNumber * secondNumber;
-                break;
-            case 4:
-                answer = firstNumber / secondNumber;
-                break;
-        }
     }
 
     private void easy() {
@@ -109,7 +136,7 @@ public class GameActivity extends AppCompatActivity {
     private void showDataOnScreen(int[] dataToBeDisplayed) {
         TextView displayPanel = (TextView) findViewById(R.id.editText);
         String stringToBeShown = "";
-        int total = 0;
+        total = 0;
         Random ran = new Random();
         int firstCount = 0;
         for (int i : dataToBeDisplayed){
@@ -143,22 +170,17 @@ public class GameActivity extends AppCompatActivity {
                         stringToBeShown = stringToBeShown.concat(currentChar);
                         break;
                 }
+                Log.d(TAG, "TotalFor: " + total);
             }
         }
 
-        displayPanel.setText(stringToBeShown + " = ?");
+        displayPanel.setText(String.format("%s = ?", stringToBeShown));
     }
 
-    private int generateSymbol(){
-        Random ran = new Random();
-        int symbolIndex  = ran.nextInt();
-        return symbolIndex;
-    }
 
     private int generateRandomNumbers() {
         Random ran = new Random();
-        int randomNumber = ran.nextInt(999)+1;
-        return randomNumber;
+        return ran.nextInt(999)+1;
     }
 
 
@@ -181,10 +203,6 @@ public class GameActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
         }
-
-    }
-
-    public void gameLogic(){
 
     }
 
@@ -232,23 +250,80 @@ public class GameActivity extends AppCompatActivity {
 
     private void placeDigitOnEditText(String text) {
         String textOnEditText = String.valueOf(editText.getText());
-        if ((textOnEditText.charAt(textOnEditText.length()-1))=='?'){
-            Log.d(TAG, "data Of ting "+ textOnEditText);
+        if ((textOnEditText.charAt(textOnEditText.length()-1))=='?') {
+            editText.setSelection(editText.getText().length());
+            textOnEditText = textOnEditText.replace('?', ' ');
+            editText.setText(textOnEditText);
         }
-        editText = (EditText) findViewById(R.id.editText);
-        editText.append(text);
+            editText = (EditText) findViewById(R.id.editText);
+            editText.append(text);
+
     }
 
     public void onButtonDelClicked(View view) {
-        textFieldInputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+        editText.setSelection(editText.getText().length());
+        String textOnEditText = String.valueOf(editText.getText());
+        if ((textOnEditText.charAt(textOnEditText.length()-1))=='=') {
+            //Do nothing
+        }else{
+            textFieldInputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+        }
     }
 
     public void onButtonHashClicked(View view) {
-        //TODO: end of answer
+        if (hashButtonClicked){
+            moveToNextQuestion();
+        }else{
+            hashButtonClicked = true;
+        }
+        if (PreferencesActivity.isHintsOnOrOff()){
+
+        }else{
+            timer.cancel();
+        }
+        validateAnswer();
     }
 
+    private void validateAnswer() {
+        String textOnEditText = String.valueOf(editText.getText());
+        String[] partsOfSplittedAnswer = textOnEditText.split("=");
+        String answerGiven = partsOfSplittedAnswer[1];
+        answerGiven = answerGiven.trim();
+        int answer = Integer.parseInt(answerGiven);
+        TextView result = ((TextView) findViewById(R.id.textView6));
+        if (answer == total){
+            //correct
+            result.setTextColor(Color.GREEN);
+            result.setText(R.string.correct_answer);
+            calculateScore();
+        }else{
+            //wrong
+            result.setTextColor(Color.RED);
+            result.setText(R.string.wrong_answer);
+            if (PreferencesActivity.isHintsOnOrOff()) {
+                if (answer < total){
+                    TextView textViewHints = ((TextView)findViewById(R.id.textView3));
+                    textViewHints.setText(R.string.greater);
+                }else{
+                    TextView textViewHints= ((TextView)findViewById(R.id.textView3));
+                    textViewHints.setText(R.string.lesser);
+                }
+            }
+        }
+    }
+
+    private void calculateScore() {
+        int score;
+        if (timerRemaining == 10){
+            score = 100;
+        }else{
+            score = (100/(10-timerRemaining));
+            LevelActivity.player.setScore(LevelActivity.player.getScore()+score);
+    }}
+
+
     public void onButtonMinusClicked(View view) {
-        //TODO: No idea what to do here
+        placeDigitOnEditText("-");
     }
 
 }

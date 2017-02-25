@@ -5,6 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ToggleButton;
 
 public class PreferencesActivity extends AppCompatActivity {
 
@@ -19,6 +20,12 @@ public class PreferencesActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Preferences");
+        ToggleButton toggleButton = ((ToggleButton) findViewById(R.id.toggleButton2));
+        if (hintsOnOrOff){
+            toggleButton.setChecked(true);
+        }else{
+            toggleButton.setChecked(false);
+        }
     }
 
     @Override

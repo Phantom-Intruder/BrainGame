@@ -157,13 +157,11 @@
         android:layout_alignParentStart="true" />
 
     <TextView
-        android:text="CORRECT!!!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView6"
         android:layout_marginBottom="42dp"
         android:textSize="24sp"
-        android:textColor="@color/colorPrimary"
         android:layout_above="@+id/editText"
         android:layout_toStartOf="@+id/button19" />
 
@@ -187,7 +185,6 @@
         android:textSize="18sp" />
 
     <TextView
-        android:text="8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView9"
@@ -228,5 +225,13 @@
         android:layout_alignBaseline="@+id/textView"
         android:layout_alignBottom="@+id/textView"
         android:layout_toEndOf="@+id/textView6" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/button18"
+        android:layout_marginBottom="25dp"
+        android:id="@+id/textView3" />
 
 </RelativeLayout >
