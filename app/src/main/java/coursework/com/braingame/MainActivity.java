@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,7 +18,6 @@ import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar mToolbar;
     public static final String MyPREFERENCES = "SavedGamePreferences" ;
     public static final String PlayerLevel = "playerLevelKey";
     public static final String QuestionNumber = "questionNumberKey";
@@ -34,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         PreferencesActivity.setHintsOnOrOff(false);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
@@ -92,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.save_game_Head);
         builder.setMessage(R.string.save_game_body);
-        final Intent intent = new Intent(this, MainActivity.class);
         builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 saveGameData();
@@ -123,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean(HintsStatus, PreferencesActivity.isHintsOnOrOff());
             editor.putInt(ScoreLevel, score);
             Log.d(TAG, "Data displayed here: "+ playerLevel + " === " + questionNumber + " === "+PreferencesActivity.isHintsOnOrOff()+" === " +score);
-            editor.commit();
-        }catch (NullPointerException e){
+            editor.apply();
+        }catch (NullPointerException ignored){
 
         }
     }

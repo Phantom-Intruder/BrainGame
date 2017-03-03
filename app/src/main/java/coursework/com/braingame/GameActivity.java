@@ -189,7 +189,6 @@ public class GameActivity extends AppCompatActivity {
         if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
                 && keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
-            Log.d("CDA", "onKeyDown Called");
             onBackPressed();
             return true;
         }
@@ -326,7 +325,7 @@ public class GameActivity extends AppCompatActivity {
     private void validateAnswer() {
         String textOnEditText = String.valueOf(editText.getText());
         String[] partsOfSplittedAnswer = textOnEditText.split("=");
-        TextView result = null;
+        TextView result;
         try{
             String answerGiven = partsOfSplittedAnswer[1];
             answerGiven = answerGiven.trim();

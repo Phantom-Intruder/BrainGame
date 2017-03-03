@@ -2,10 +2,9 @@ package coursework.com.braingame;
 
 import java.io.Serializable;
 
-public class Player implements Serializable {
+class Player implements Serializable {
     private String playerLevel;
     private int questionNumber=0;
-    private boolean hintsOnOrOff;
     private int score =0;
 
     Player(String playerLevel, boolean hintsOnOrOff){
@@ -13,36 +12,26 @@ public class Player implements Serializable {
         this.setHintsOnOrOff(hintsOnOrOff);
     }
 
-
-    public void setPlayerLevel(String playerLevel){
-        this.playerLevel = playerLevel;
-    }
-
-    public String getPlayerLevel() {
+    String getPlayerLevel() {
         return playerLevel;
     }
 
-    public int getQuestionNumber() {
+    int getQuestionNumber() {
         return questionNumber;
     }
 
-    public void setQuestionNumber(int questionNumber) {
+    void setQuestionNumber(int questionNumber) {
         this.questionNumber = questionNumber;
     }
 
-    public boolean isHintsOnOrOff() {
-        return hintsOnOrOff;
+    private void setHintsOnOrOff(boolean hintsOnOrOff) {
     }
 
-    public void setHintsOnOrOff(boolean hintsOnOrOff) {
-        this.hintsOnOrOff = hintsOnOrOff;
-    }
-
-    public int getScore() {
+    int getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    void setScore(int score) {
         this.score = score;
     }
 }

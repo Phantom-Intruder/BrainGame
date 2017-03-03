@@ -12,14 +12,13 @@ import static android.content.ContentValues.TAG;
 
 public class PreferencesActivity extends AppCompatActivity {
 
-    private Toolbar mToolbar;
     private static boolean hintsOnOrOff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Preferences");
