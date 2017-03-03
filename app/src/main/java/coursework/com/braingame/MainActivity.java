@@ -10,12 +10,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import java.util.logging.Level;
 
 import static android.content.ContentValues.TAG;
 
@@ -56,18 +54,8 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        Intent intent = new Intent(this, PreferencesActivity.class);
-        startActivity(intent);
-        return true;
-    }
+
 
     //Main screen buttons
     public void newGameButtonClicked(View view) {
@@ -82,7 +70,11 @@ public class MainActivity extends AppCompatActivity {
         boolean hintsOnOrOff = sharedpreferences.getBoolean(HintsStatus, false);
         int score = sharedpreferences.getInt(ScoreLevel, 0);
         Intent intent = new Intent(this, GameActivity.class);
-        Player player = new Player("novice", PreferencesActivity.isHintsOnOrOff());
+        PlayerManagementClass playerManagementClass = new PlayerManagementClass();
+        playerManagementClass.createPlayer(playerLevel, hintsOnOrOff);
+        PreferencesActivity.setHintsOnOrOff(hintsOnOrOff);
+        PlayerManagementClass.player.setQuestionNumber(questionNumber);
+        PlayerManagementClass.player.setScore(score);
         startActivity(intent);
         Log.d(TAG, "Data displayed here: "+ playerLevel + " === " + questionNumber + " === "+hintsOnOrOff+" === " +score);
 
@@ -122,15 +114,15 @@ public class MainActivity extends AppCompatActivity {
     public void saveGameData() {
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         try {
-            String playerLevel = LevelActivity.player.getPlayerLevel();
-            int questionNumber = LevelActivity.player.getQuestionNumber();
-            boolean isHintsOnOrOff = LevelActivity.player.isHintsOnOrOff();
-            int score = LevelActivity.player.getScore();
+            String playerLevel = PlayerManagementClass.player.getPlayerLevel();
+            int questionNumber = PlayerManagementClass.player.getQuestionNumber();
+            int score = PlayerManagementClass.player.getScore();
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putString(PlayerLevel, playerLevel);
             editor.putInt(QuestionNumber, questionNumber);
-            editor.putBoolean(HintsStatus, isHintsOnOrOff);
+            editor.putBoolean(HintsStatus, PreferencesActivity.isHintsOnOrOff());
             editor.putInt(ScoreLevel, score);
+            Log.d(TAG, "Data displayed here: "+ playerLevel + " === " + questionNumber + " === "+PreferencesActivity.isHintsOnOrOff()+" === " +score);
             editor.commit();
         }catch (NullPointerException e){
 

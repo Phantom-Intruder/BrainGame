@@ -21,40 +21,40 @@
             android:text="@string/exit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button4"
+            android:id="@+id/button_exit"
             android:onClick="exitButtonClicked"
             android:layout_marginBottom="80dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/button2"
-            android:layout_alignEnd="@+id/button3" />
+            android:layout_alignStart="@+id/button_new_game"
+            android:layout_alignEnd="@+id/button_about" />
 
         <Button
             android:text="@string/continue_game"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button"
+            android:id="@+id/button_continue"
             android:onClick="continueButtonClicked"
             android:layout_marginBottom="50dp"
-            android:layout_above="@+id/button2"
-            android:layout_alignStart="@+id/button2" />
+            android:layout_above="@+id/button_new_game"
+            android:layout_alignStart="@+id/button_new_game" />
 
         <Button
             android:text="@string/new_game"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button2"
+            android:id="@+id/button_new_game"
             android:onClick="newGameButtonClicked"
             android:layout_marginBottom="55dp"
-            android:layout_above="@+id/button3"
+            android:layout_above="@+id/button_about"
             android:layout_centerHorizontal="true" />
 
         <Button
             android:text="@string/about"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button3"
+            android:id="@+id/button_about"
             android:onClick="aboutButtonClicked"
             android:layout_marginBottom="48dp"
-            android:layout_above="@+id/button4"
-            android:layout_alignStart="@+id/button2" />
+            android:layout_above="@+id/button_exit"
+            android:layout_alignStart="@+id/button_new_game" />
     </RelativeLayout>

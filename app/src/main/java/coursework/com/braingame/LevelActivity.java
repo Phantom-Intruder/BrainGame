@@ -11,7 +11,6 @@ import android.view.View;
 public class LevelActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    public static Player player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,25 +45,29 @@ public class LevelActivity extends AppCompatActivity {
     //Level screen buttons
     public void noviceButtonClicked(View view) {
         Intent intent = new Intent(this, GameActivity.class);
-        player = new Player("novice", PreferencesActivity.isHintsOnOrOff());
+        PlayerManagementClass playerManagementClass = new PlayerManagementClass();
+        playerManagementClass.createPlayer("novice", PreferencesActivity.isHintsOnOrOff());
         startActivity(intent);
     }
 
     public void easyButtonClicked(View view) {
         Intent intent = new Intent(this, GameActivity.class);
-        player = new Player("easy", PreferencesActivity.isHintsOnOrOff());
+        PlayerManagementClass playerManagementClass = new PlayerManagementClass();
+        playerManagementClass.createPlayer("easy", PreferencesActivity.isHintsOnOrOff());
         startActivity(intent);
     }
 
     public void mediumButtonClicked(View view) {
         Intent intent = new Intent(this, GameActivity.class);
-        player = new Player("medium", PreferencesActivity.isHintsOnOrOff());
+        PlayerManagementClass playerManagementClass = new PlayerManagementClass();
+        playerManagementClass.createPlayer("medium", PreferencesActivity.isHintsOnOrOff());
         startActivity(intent);
     }
 
     public void guruButtonClicked(View view) {
         Intent intent = new Intent(this, GameActivity.class);
-        player = new Player("guru", PreferencesActivity.isHintsOnOrOff());
+        PlayerManagementClass playerManagementClass = new PlayerManagementClass();
+        playerManagementClass.createPlayer("guru", PreferencesActivity.isHintsOnOrOff());
         startActivity(intent);
     }
 }

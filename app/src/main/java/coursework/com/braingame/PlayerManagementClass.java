@@ -1,8 +1,10 @@
 package coursework.com.braingame;
 
-/**
- * Created by userh on 03-Mar-17.
- */
 
 public class PlayerManagementClass {
+    public static Player player;
+
+    void createPlayer(String level, boolean hintsStatus){
+        player = new Player(level, hintsStatus);
+    }
 }

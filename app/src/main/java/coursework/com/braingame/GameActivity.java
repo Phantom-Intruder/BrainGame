@@ -20,7 +20,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import static android.content.ContentValues.TAG;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 
@@ -44,17 +43,17 @@ public class GameActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Play game");
-        editText = (EditText)findViewById(R.id.editText);
+        editText = (EditText)findViewById(R.id.text_entry_area);
         editText.setInputType(InputType.TYPE_NULL);
-        LevelActivity.player.setQuestionNumber(LevelActivity.player.getQuestionNumber()+1);
-        Log.d(TAG, "TotalFor: player question " + LevelActivity.player.getQuestionNumber());
+        PlayerManagementClass.player.setQuestionNumber(PlayerManagementClass.player.getQuestionNumber()+1);
+        Log.d(TAG, "TotalFor: player question " + PlayerManagementClass.player.getQuestionNumber());
         textFieldInputConnection = new BaseInputConnection(editText, true);
         if (android.os.Build.VERSION.SDK_INT >= 11)
         {
             editText.setRawInputType(InputType.TYPE_CLASS_TEXT);
             editText.setTextIsSelectable(true);
         }
-        String levelOfPlayer = LevelActivity.player.getPlayerLevel();
+        String levelOfPlayer = PlayerManagementClass.player.getPlayerLevel();
         switch (levelOfPlayer){
             case "novice":
                 //Novice
@@ -79,8 +78,8 @@ public class GameActivity extends AppCompatActivity {
     private void timerMethod() {
         levelOfProgressbarFilled = 0;
 
-        progressBar = (ProgressBar)findViewById(R.id.progressBar5);
-        textView = ((TextView)findViewById(R.id.textView9));
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        textView = ((TextView)findViewById(R.id.result));
         timer = new CountDownTimer(10000, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -97,7 +96,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void moveToNextQuestion() {
-        if (LevelActivity.player.getQuestionNumber() == 4){
+        if (PlayerManagementClass.player.getQuestionNumber() == 4){
             Intent intent = new Intent(this, ScoreActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -128,7 +127,6 @@ public class GameActivity extends AppCompatActivity {
     private void generateDataToShowOnScreen(int upperbound, int lowerbound) {
         Random ran = new Random();
         int numberOfLoops = ran.nextInt(upperbound-lowerbound + 1) + lowerbound;
-        Log.d(TAG, "Data displayed here: "+ numberOfLoops+ " "+ upperbound + " " + lowerbound);
         int[] dataToBeDisplayed = new int[numberOfLoops];
         for (int i = 0; i < numberOfLoops; i++) {
             dataToBeDisplayed[i] = generateRandomNumbers();
@@ -137,7 +135,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void showDataOnScreen(int[] dataToBeDisplayed) {
-        TextView displayPanel = (TextView) findViewById(R.id.editText);
+        TextView displayPanel = (TextView) findViewById(R.id.text_entry_area);
         String stringToBeShown = "";
         total = 0;
         Random ran = new Random();
@@ -295,7 +293,7 @@ public class GameActivity extends AppCompatActivity {
             textOnEditText = textOnEditText.replace('?', ' ');
             editText.setText(textOnEditText);
         }
-            editText = (EditText) findViewById(R.id.editText);
+            editText = (EditText) findViewById(R.id.text_entry_area);
             editText.append(text);
 
     }
@@ -366,10 +364,10 @@ public class GameActivity extends AppCompatActivity {
         int score;
         if (timerRemaining == 10){
             score = 100;
-            LevelActivity.player.setScore(LevelActivity.player.getScore()+score);
+            PlayerManagementClass.player.setScore(PlayerManagementClass.player.getScore()+score);
         }else{
             score = (100/(10-timerRemaining));
-            LevelActivity.player.setScore(LevelActivity.player.getScore()+score);
+            PlayerManagementClass.player.setScore(PlayerManagementClass.player.getScore()+score);
     }}
 
 
