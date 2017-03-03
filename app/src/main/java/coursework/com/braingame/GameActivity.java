@@ -1,5 +1,7 @@
 package coursework.com.braingame;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -184,6 +186,43 @@ public class GameActivity extends AppCompatActivity {
         return ran.nextInt(999)+1;
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            Log.d("CDA", "onKeyDown Called");
+            onBackPressed();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.stop_game);
+        builder.setMessage(R.string.stop_text);
+        final Intent intent = new Intent(this, MainActivity.class);
+
+        builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //saveGameData();
+                timer.cancel();
+                startActivity(intent);
+                finish();
+            }
+        }).create();
+
+        builder.setPositiveButton("No",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        }).create();
+
+
+        builder.show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -197,7 +236,7 @@ public class GameActivity extends AppCompatActivity {
 
         switch (id){
             case android.R.id.home:
-                this.finish();
+                onBackPressed();
                 return true;
             default:
                 Intent intent = new Intent(this, PreferencesActivity.class);

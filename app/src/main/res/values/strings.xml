@@ -44,4 +44,6 @@
     <string name="save_game_body">Do you wish to save your game?</string>
     <string name="instruction_head">Instructions</string>
     <string name="instruction_body">You shall be presented with an mathematical problem, which will depend on the level of skill you choose.\n\nYou must type in the answer to the questions within the time limit.\n\nYou may use the hints option in the preferences menu to help you with the game.</string>
+    <string name="stop_game">Stop game</string>
+    <string name="stop_text">Do you want to stop the current game?</string>
 </resources>

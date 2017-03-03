@@ -5,39 +5,32 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
-import android.provider.Settings;
+import android.content.SharedPreferences;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
+import java.util.logging.Level;
+
+import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
+    public static final String MyPREFERENCES = "SavedGamePreferences" ;
+    public static final String PlayerLevel = "playerLevelKey";
+    public static final String QuestionNumber = "questionNumberKey";
+    public static final String HintsStatus = "hintsKey";
+    public static final String ScoreLevel = "scoreLevelKey";
+
+
+    SharedPreferences sharedpreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +41,21 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            onBackPressed();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -68,11 +76,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void continueButtonClicked(View view) {
-        //TODO: Start saved game
-            readFromDatabase();
-
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String playerLevel = sharedpreferences.getString(PlayerLevel, "Novice");
+        int questionNumber = sharedpreferences.getInt(QuestionNumber, 1);
+        boolean hintsOnOrOff = sharedpreferences.getBoolean(HintsStatus, false);
+        int score = sharedpreferences.getInt(ScoreLevel, 0);
         Intent intent = new Intent(this, GameActivity.class);
+        Player player = new Player("novice", PreferencesActivity.isHintsOnOrOff());
         startActivity(intent);
+        Log.d(TAG, "Data displayed here: "+ playerLevel + " === " + questionNumber + " === "+hintsOnOrOff+" === " +score);
+
     }
 
     public void aboutButtonClicked(View view) {
@@ -87,11 +100,14 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.save_game_Head);
         builder.setMessage(R.string.save_game_body);
-
+        final Intent intent = new Intent(this, MainActivity.class);
         builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                saveToDatabase();
-                finish();
+                saveGameData();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         }).create();
 
@@ -100,46 +116,24 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         }).create();
-
-
         builder.show();
     }
 
-    // Constant with a file name
-
-    // Serializes an object and saves it to a file
-    public void saveToDatabase() {
-        BraingameDatabaseHelper braingameDatabaseHelper = new BraingameDatabaseHelper(this);
-    }
-
-
-    // Creates an object by reading it from a file
-    public  void  readFromDatabase() {
-        try{
-            SQLiteOpenHelper braingameDatabaseHelper = new BraingameDatabaseHelper(this);
-            SQLiteDatabase db = braingameDatabaseHelper.getReadableDatabase();
-            Cursor cursor = db.query("PLAYER",
-                    new String[] {"PLAYER_LEVEL", "QUESTION_NUMBER", "SCORE", "HINTS"}, null, null, null, null, null);
-            if (cursor.moveToFirst()){
-                LevelActivity.player.setPlayerLevel(cursor.getString(0));
-                LevelActivity.player.setQuestionNumber(cursor.getInt(1));
-                LevelActivity.player.setScore(cursor.getInt(2));
-                int value = cursor.getInt(3);
-                if (value == 0){
-                    LevelActivity.player.setHintsOnOrOff(false);
-                }else{
-                    LevelActivity.player.setHintsOnOrOff(true);
-                }
-            }
-        }catch (SQLiteException e){
+    public void saveGameData() {
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        try {
+            String playerLevel = LevelActivity.player.getPlayerLevel();
+            int questionNumber = LevelActivity.player.getQuestionNumber();
+            boolean isHintsOnOrOff = LevelActivity.player.isHintsOnOrOff();
+            int score = LevelActivity.player.getScore();
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString(PlayerLevel, playerLevel);
+            editor.putInt(QuestionNumber, questionNumber);
+            editor.putBoolean(HintsStatus, isHintsOnOrOff);
+            editor.putInt(ScoreLevel, score);
+            editor.commit();
+        }catch (NullPointerException e){
 
         }
-
     }
-
-
-
-
-
-
 }
