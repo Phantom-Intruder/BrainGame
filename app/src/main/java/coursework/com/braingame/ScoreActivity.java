@@ -37,9 +37,8 @@ public class ScoreActivity extends AppCompatActivity {
 
     public void playAgain(View view) {
         Intent intent = new Intent(this, GameActivity.class);
-        PlayerManagementClass.player = new Player(PlayerManagementClass.player.getPlayerLevel(), PreferencesActivity.isHintsOnOrOff());
+        PlayerManagementClass.player = new Player(PlayerManagementClass.player.getPlayerLevel());
         startActivity(intent);
-
     }
 
     public void goToMainMenue(View view) {

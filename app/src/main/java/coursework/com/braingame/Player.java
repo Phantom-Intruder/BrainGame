@@ -6,10 +6,11 @@ class Player implements Serializable {
     private String playerLevel;
     private int questionNumber=0;
     private int score =0;
+    private boolean hintsOnOrOff;
 
-    Player(String playerLevel, boolean hintsOnOrOff){
+    Player(String playerLevel){
         this.playerLevel = playerLevel;
-        this.setHintsOnOrOff(hintsOnOrOff);
+        this.hintsOnOrOff = false;
     }
 
     String getPlayerLevel() {
@@ -24,7 +25,12 @@ class Player implements Serializable {
         this.questionNumber = questionNumber;
     }
 
-    private void setHintsOnOrOff(boolean hintsOnOrOff) {
+    void setHintsOnOrOff(boolean hintsOnOrOff) {
+        this.hintsOnOrOff = hintsOnOrOff;
+    }
+
+     boolean getHintsOnOrOff(){
+        return hintsOnOrOff;
     }
 
     int getScore() {

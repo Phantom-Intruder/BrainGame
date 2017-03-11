@@ -12,8 +12,6 @@ import static android.content.ContentValues.TAG;
 
 public class PreferencesActivity extends AppCompatActivity {
 
-    private static boolean hintsOnOrOff;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,13 +21,13 @@ public class PreferencesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Preferences");
         ToggleButton toggleButton = ((ToggleButton) findViewById(R.id.hint_toggle_button));
-        Log.d(TAG, "Data displayed here: " + hintsOnOrOff);
-        if (hintsOnOrOff){
+        Log.d(TAG, "Data displayed here: " + PlayerManagementClass.player.getHintsOnOrOff());
+        if (PlayerManagementClass.player.getHintsOnOrOff()){
             toggleButton.setChecked(true);
         }else{
             toggleButton.setChecked(false);
         }
-        Log.d(TAG, "Data displayed here: " + hintsOnOrOff);
+        Log.d(TAG, "Data displayed here: " + PlayerManagementClass.player.getHintsOnOrOff());
     }
 
     @Override
@@ -39,14 +37,11 @@ public class PreferencesActivity extends AppCompatActivity {
     }
 
     public static boolean isHintsOnOrOff() {
-        return hintsOnOrOff;
-    }
-
-    public static void setHintsOnOrOff(boolean hintsOnOrOffVar){
-        hintsOnOrOff = hintsOnOrOffVar;
+        Log.d(TAG, "Hints are on: "+PlayerManagementClass.player.getHintsOnOrOff());
+        return PlayerManagementClass.player.getHintsOnOrOff();
     }
 
     public void setHintsOffOrOn(View view) {
-        hintsOnOrOff = !hintsOnOrOff;
+        PlayerManagementClass.player.setHintsOnOrOff(!PlayerManagementClass.player.getHintsOnOrOff());
     }
 }

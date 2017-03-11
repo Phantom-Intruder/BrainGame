@@ -21,51 +21,44 @@ public class LevelActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
         switch (id){
-            case android.R.id.home:
-                this.finish();
-                return true;
             default:
-                Intent intent = new Intent(this, PreferencesActivity.class);
-                startActivity(intent);
+                this.finish();
                 return true;
         }
     }
+
     //Level screen buttons
+
     public void noviceButtonClicked(View view) {
+
         Intent intent = new Intent(this, GameActivity.class);
         PlayerManagementClass playerManagementClass = new PlayerManagementClass();
-        playerManagementClass.createPlayer("novice", PreferencesActivity.isHintsOnOrOff());
+        playerManagementClass.createPlayer("novice");
         startActivity(intent);
     }
 
     public void easyButtonClicked(View view) {
         Intent intent = new Intent(this, GameActivity.class);
         PlayerManagementClass playerManagementClass = new PlayerManagementClass();
-        playerManagementClass.createPlayer("easy", PreferencesActivity.isHintsOnOrOff());
+        playerManagementClass.createPlayer("easy");
         startActivity(intent);
     }
 
     public void mediumButtonClicked(View view) {
         Intent intent = new Intent(this, GameActivity.class);
         PlayerManagementClass playerManagementClass = new PlayerManagementClass();
-        playerManagementClass.createPlayer("medium", PreferencesActivity.isHintsOnOrOff());
+        playerManagementClass.createPlayer("medium");
         startActivity(intent);
     }
 
     public void guruButtonClicked(View view) {
         Intent intent = new Intent(this, GameActivity.class);
         PlayerManagementClass playerManagementClass = new PlayerManagementClass();
-        playerManagementClass.createPlayer("guru", PreferencesActivity.isHintsOnOrOff());
+        playerManagementClass.createPlayer("guru");
         startActivity(intent);
     }
 }

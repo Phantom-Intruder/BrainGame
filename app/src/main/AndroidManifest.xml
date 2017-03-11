@@ -24,9 +24,6 @@
         <activity
             android:name=".PreferencesActivity"
             android:theme="@style/MyMaterialTheme" />
-        <activity
-            android:name=".AboutActivity"
-            android:theme="@style/Theme.AppCompat.Dialog" />
         <activity android:name=".ScoreActivity"></activity>
     </application>
 
