@@ -7,10 +7,19 @@ class Player implements Serializable {
     private int questionNumber=0;
     private int score =0;
     private boolean hintsOnOrOff;
+    private static Player instance;
 
     Player(String playerLevel){
         this.playerLevel = playerLevel;
         this.hintsOnOrOff = false;
+    }
+
+    public static synchronized Player getInstance(String playerLevel)
+    {
+        if (instance == null)
+            instance = new Player(playerLevel);
+
+        return instance;
     }
 
     String getPlayerLevel() {

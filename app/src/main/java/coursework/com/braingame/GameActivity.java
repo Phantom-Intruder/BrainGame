@@ -25,78 +25,77 @@ import java.util.Random;
 
 
 public class GameActivity extends AppCompatActivity {
-    private EditText editText;
-    private BaseInputConnection textFieldInputConnection;
-    private int total;
-    private static CountDownTimer timer;
+    private EditText answerEntryEditText;
+    private BaseInputConnection deleteKeyHandler;
+    private int correctAnswer;
+    private static CountDownTimer countDownTimer;
     private ProgressBar progressBar;
     private int levelOfProgressbarFilled;
-    private TextView textView;
-    private int numberOfhashButtonClicks = 0;
+    private TextView correctOrWrongAnswerDisplay;
+    private int numberOfHashButtonClicks = 0;
     private int timerRemaining;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Runs every time a new question is presented to the user in the game
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Play game");
-        editText = (EditText)findViewById(R.id.text_entry_area);
-        editText.setInputType(InputType.TYPE_NULL);
+        answerEntryEditText = (EditText)findViewById(R.id.text_entry_area);
+        answerEntryEditText.setInputType(InputType.TYPE_NULL);
+        //Keep track of which question the player is in
         PlayerManagementClass.player.setQuestionNumber(PlayerManagementClass.player.getQuestionNumber()+1);
-        Log.d(TAG, "TotalFor: player question " + PlayerManagementClass.player.getQuestionNumber());
-        textFieldInputConnection = new BaseInputConnection(editText, true);
+        deleteKeyHandler = new BaseInputConnection(answerEntryEditText, true);
         if (android.os.Build.VERSION.SDK_INT >= 11)
         {
-            editText.setRawInputType(InputType.TYPE_CLASS_TEXT);
-            editText.setTextIsSelectable(true);
+            answerEntryEditText.setRawInputType(InputType.TYPE_CLASS_TEXT);
+            answerEntryEditText.setTextIsSelectable(true);
         }
         String levelOfPlayer = PlayerManagementClass.player.getPlayerLevel();
         switch (levelOfPlayer){
             case "novice":
-                //Novice
                 novice();
                 break;
             case "easy":
-                //easy
                 easy();
                 break;
             case "medium":
-                //medium
                 medium();
                 break;
             case "guru":
-                //guru
                 guru();
                 break;
         }
-        timerMethod();
+        startCountdownTimer();
     }
 
-    private void timerMethod() {
+    private void startCountdownTimer() {
         levelOfProgressbarFilled = 0;
-
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
-        textView = ((TextView)findViewById(R.id.result));
-        timer = new CountDownTimer(10000, 1000) {
+        correctOrWrongAnswerDisplay = ((TextView)findViewById(R.id.result));
+        countDownTimer = new CountDownTimer(10000, 1000) {
 
             public void onTick(long millisUntilFinished) {
+                //Fill progress bar with every second
                 levelOfProgressbarFilled += 10;
                 progressBar.setProgress(levelOfProgressbarFilled);
                 timerRemaining = (10 - levelOfProgressbarFilled / 10);
-                textView.setText(String.format("%d", timerRemaining));
+                correctOrWrongAnswerDisplay.setText(String.format("%d", timerRemaining));
             }
+            //Once the timer is finished
             public void onFinish() {
                 moveToNextQuestion();
             }
-
         }.start();
     }
 
     private void moveToNextQuestion() {
-        if (PlayerManagementClass.player.getQuestionNumber() == 4){
+        //Move to next question unless question is the 10th question.
+        // In that case show the score.
+        if (PlayerManagementClass.player.getQuestionNumber() == 10){
             Intent intent = new Intent(this, ScoreActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -137,13 +136,13 @@ public class GameActivity extends AppCompatActivity {
     private void showDataOnScreen(int[] dataToBeDisplayed) {
         TextView displayPanel = (TextView) findViewById(R.id.text_entry_area);
         String stringToBeShown = "";
-        total = 0;
+        correctAnswer = 0;
         Random ran = new Random();
         int firstCount = 0;
         for (int i : dataToBeDisplayed){
             String currentChar = "" + i;
             if (firstCount == 0){
-                total = i;
+                correctAnswer = i;
                 stringToBeShown = stringToBeShown.concat(currentChar);
                 firstCount++;
             }else {
@@ -151,27 +150,27 @@ public class GameActivity extends AppCompatActivity {
                 int symbol = ran.nextInt(4) + 1;
                 switch (symbol) {
                     case 1:
-                        total += i;
+                        correctAnswer += i;
                         stringToBeShown = stringToBeShown.concat("+");
                         stringToBeShown = stringToBeShown.concat(currentChar);
                         break;
                     case 2:
-                        total -= i;
+                        correctAnswer -= i;
                         stringToBeShown = stringToBeShown.concat("-");
                         stringToBeShown = stringToBeShown.concat(currentChar);
                         break;
                     case 3:
-                        total *= i;
+                        correctAnswer *= i;
                         stringToBeShown = stringToBeShown.concat(" x ");
                         stringToBeShown = stringToBeShown.concat(currentChar);
                         break;
                     case 4:
-                        total /= i;
+                        correctAnswer /= i;
                         stringToBeShown = stringToBeShown.concat("/");
                         stringToBeShown = stringToBeShown.concat(currentChar);
                         break;
                 }
-                Log.d(TAG, "TotalFor: " + total);
+                Log.d(TAG, "TotalFor: " + correctAnswer);
             }
         }
 
@@ -205,7 +204,7 @@ public class GameActivity extends AppCompatActivity {
         builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //saveGameData();
-                timer.cancel();
+                countDownTimer.cancel();
                 startActivity(intent);
                 finish();
             }
@@ -286,44 +285,44 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void placeDigitOnEditText(String text) {
-        String textOnEditText = String.valueOf(editText.getText());
+        String textOnEditText = String.valueOf(answerEntryEditText.getText());
         if ((textOnEditText.charAt(textOnEditText.length()-1))=='?') {
-            editText.setSelection(editText.getText().length());
+            answerEntryEditText.setSelection(answerEntryEditText.getText().length());
             textOnEditText = textOnEditText.replace('?', ' ');
-            editText.setText(textOnEditText);
+            answerEntryEditText.setText(textOnEditText);
         }
-            editText = (EditText) findViewById(R.id.text_entry_area);
-            editText.append(text);
+            answerEntryEditText = (EditText) findViewById(R.id.text_entry_area);
+            answerEntryEditText.append(text);
 
     }
 
     public void onButtonDelClicked(View view) {
-        editText.setSelection(editText.getText().length());
-        String textOnEditText = String.valueOf(editText.getText());
+        answerEntryEditText.setSelection(answerEntryEditText.getText().length());
+        String textOnEditText = String.valueOf(answerEntryEditText.getText());
         if ((textOnEditText.charAt(textOnEditText.length()-1))!='=') {
-            textFieldInputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+            deleteKeyHandler.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
         }
     }
 
     public void onButtonHashClicked(View view) {
-        if ((numberOfhashButtonClicks >= 1)&&(!PreferencesActivity.isHintsOnOrOff()) ){
+        if ((numberOfHashButtonClicks >= 1)&&(!PreferencesActivity.isHintsOnOrOff()) ){
             moveToNextQuestion();
         }else{
-            if (numberOfhashButtonClicks == 4){
-                timer.cancel();
+            if (numberOfHashButtonClicks == 4){
+                countDownTimer.cancel();
                 moveToNextQuestion();
             }else{
-                numberOfhashButtonClicks++;
+                numberOfHashButtonClicks++;
             }
         }
         if (!PreferencesActivity.isHintsOnOrOff()) {
-            timer.cancel();
+            countDownTimer.cancel();
         }
         validateAnswer();
     }
 
     private void validateAnswer() {
-        String textOnEditText = String.valueOf(editText.getText());
+        String textOnEditText = String.valueOf(answerEntryEditText.getText());
         String[] partsOfSplittedAnswer = textOnEditText.split("=");
         TextView result;
         try{
@@ -331,19 +330,19 @@ public class GameActivity extends AppCompatActivity {
             answerGiven = answerGiven.trim();
             int answer = Integer.parseInt(answerGiven);
             result = ((TextView) findViewById(R.id.textView6));
-            if (answer == total) {
+            if (answer == correctAnswer) {
                 //correct
                 result.setTextColor(Color.GREEN);
                 result.setText(R.string.correct_answer);
-                timer.cancel();
-                numberOfhashButtonClicks = 4;
+                countDownTimer.cancel();
+                numberOfHashButtonClicks = 4;
                 calculateScore();
             } else {
                 //wrong
                 result.setTextColor(Color.RED);
                 result.setText(R.string.wrong_answer);
                 if (PreferencesActivity.isHintsOnOrOff()) {
-                    if (answer < total) {
+                    if (answer < correctAnswer) {
                         TextView textViewHints = ((TextView) findViewById(R.id.textView3));
                         textViewHints.setText(R.string.greater);
                     } else {

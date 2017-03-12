@@ -34,7 +34,7 @@ public class LevelActivity extends AppCompatActivity {
     //Level screen buttons
 
     public void noviceButtonClicked(View view) {
-
+        //Create player object with novice level
         Intent intent = new Intent(this, GameActivity.class);
         PlayerManagementClass playerManagementClass = new PlayerManagementClass();
         playerManagementClass.createPlayer("novice");
@@ -42,6 +42,7 @@ public class LevelActivity extends AppCompatActivity {
     }
 
     public void easyButtonClicked(View view) {
+        //Create player object with easy level
         Intent intent = new Intent(this, GameActivity.class);
         PlayerManagementClass playerManagementClass = new PlayerManagementClass();
         playerManagementClass.createPlayer("easy");
@@ -49,6 +50,7 @@ public class LevelActivity extends AppCompatActivity {
     }
 
     public void mediumButtonClicked(View view) {
+        //Create player object with medium  level
         Intent intent = new Intent(this, GameActivity.class);
         PlayerManagementClass playerManagementClass = new PlayerManagementClass();
         playerManagementClass.createPlayer("medium");
@@ -56,6 +58,7 @@ public class LevelActivity extends AppCompatActivity {
     }
 
     public void guruButtonClicked(View view) {
+        //Create player object with guru level
         Intent intent = new Intent(this, GameActivity.class);
         PlayerManagementClass playerManagementClass = new PlayerManagementClass();
         playerManagementClass.createPlayer("guru");
