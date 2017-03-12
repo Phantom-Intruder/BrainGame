@@ -14,10 +14,11 @@ public class ScoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
         TextView textView = ((TextView)findViewById(R.id.score));
-        textView.setText(String.format("%d", PlayerManagementClass.player.getScore()));
+        textView.setText(String.format("%d", Player.getInstanceOfObject().getScore()));
 
     }
 
+    //Handle back key presses
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
@@ -37,11 +38,13 @@ public class ScoreActivity extends AppCompatActivity {
 
     public void playAgain(View view) {
         Intent intent = new Intent(this, GameActivity.class);
-        PlayerManagementClass.player = new Player(PlayerManagementClass.player.getPlayerLevel());
+        String playerLevel = Player.getInstanceOfObject().getPlayerLevel();
+        Player.getInstanceOfObject().destroyInstance();
+        Player.getInstanceOfObject().setPlayerLevel(playerLevel);
         startActivity(intent);
     }
 
-    public void goToMainMenue(View view) {
+    public void goToMainMenu(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

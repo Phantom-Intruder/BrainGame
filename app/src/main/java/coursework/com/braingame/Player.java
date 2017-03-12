@@ -1,25 +1,31 @@
 package coursework.com.braingame;
 
-import java.io.Serializable;
-
-class Player implements Serializable {
+//Singleton class that has a player object that can be accessed by all other classes
+class Player {
     private String playerLevel;
     private int questionNumber=0;
     private int score =0;
     private boolean hintsOnOrOff;
-    private static Player instance;
+    private static Player instanceOfObject;
 
-    Player(String playerLevel){
-        this.playerLevel = playerLevel;
+    private Player(){
         this.hintsOnOrOff = false;
     }
 
-    public static synchronized Player getInstance(String playerLevel)
+    static synchronized Player getInstanceOfObject()
     {
-        if (instance == null)
-            instance = new Player(playerLevel);
+        if (instanceOfObject == null)
+            instanceOfObject = new Player();
 
-        return instance;
+        return instanceOfObject;
+    }
+
+    void setPlayerLevel(String playerLevel){
+        this.playerLevel = playerLevel;
+    }
+
+    void destroyInstance(){
+        instanceOfObject = null;
     }
 
     String getPlayerLevel() {

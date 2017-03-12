@@ -2,13 +2,10 @@ package coursework.com.braingame;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ToggleButton;
-
-import static android.content.ContentValues.TAG;
 
 public class PreferencesActivity extends AppCompatActivity {
 
@@ -21,27 +18,26 @@ public class PreferencesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Preferences");
         ToggleButton toggleButton = ((ToggleButton) findViewById(R.id.hint_toggle_button));
-        Log.d(TAG, "Data displayed here: " + PlayerManagementClass.player.getHintsOnOrOff());
-        if (PlayerManagementClass.player.getHintsOnOrOff()){
+        if (Player.getInstanceOfObject().getHintsOnOrOff()){
             toggleButton.setChecked(true);
         }else{
             toggleButton.setChecked(false);
         }
-        Log.d(TAG, "Data displayed here: " + PlayerManagementClass.player.getHintsOnOrOff());
     }
 
+    //Handle back button clicks
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         this.finish();
         return true;
     }
 
+    //Turn hints on or off
     public static boolean isHintsOnOrOff() {
-        Log.d(TAG, "Hints are on: "+PlayerManagementClass.player.getHintsOnOrOff());
-        return PlayerManagementClass.player.getHintsOnOrOff();
+        return Player.getInstanceOfObject().getHintsOnOrOff();
     }
 
     public void setHintsOffOrOn(View view) {
-        PlayerManagementClass.player.setHintsOnOrOff(!PlayerManagementClass.player.getHintsOnOrOff());
+        Player.getInstanceOfObject().setHintsOnOrOff(!Player.getInstanceOfObject().getHintsOnOrOff());
     }
 }

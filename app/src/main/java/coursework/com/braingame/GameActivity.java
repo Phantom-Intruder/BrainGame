@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -47,14 +48,15 @@ public class GameActivity extends AppCompatActivity {
         answerEntryEditText = (EditText)findViewById(R.id.text_entry_area);
         answerEntryEditText.setInputType(InputType.TYPE_NULL);
         //Keep track of which question the player is in
-        PlayerManagementClass.player.setQuestionNumber(PlayerManagementClass.player.getQuestionNumber()+1);
+        Player.getInstanceOfObject().setQuestionNumber(Player.getInstanceOfObject().getQuestionNumber()+1);
         deleteKeyHandler = new BaseInputConnection(answerEntryEditText, true);
         if (android.os.Build.VERSION.SDK_INT >= 11)
         {
             answerEntryEditText.setRawInputType(InputType.TYPE_CLASS_TEXT);
             answerEntryEditText.setTextIsSelectable(true);
         }
-        String levelOfPlayer = PlayerManagementClass.player.getPlayerLevel();
+        Log.d(TAG, "Hints are on1234: "+Player.getInstanceOfObject().getQuestionNumber());
+        String levelOfPlayer = Player.getInstanceOfObject().getPlayerLevel();
         switch (levelOfPlayer){
             case "novice":
                 novice();
@@ -95,7 +97,7 @@ public class GameActivity extends AppCompatActivity {
     private void moveToNextQuestion() {
         //Move to next question unless question is the 10th question.
         // In that case show the score.
-        if (PlayerManagementClass.player.getQuestionNumber() == 10){
+        if (Player.getInstanceOfObject().getQuestionNumber() == 10){
             Intent intent = new Intent(this, ScoreActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -135,46 +137,57 @@ public class GameActivity extends AppCompatActivity {
 
     private void showDataOnScreen(int[] dataToBeDisplayed) {
         TextView displayPanel = (TextView) findViewById(R.id.text_entry_area);
+        String stringToBeShown = generateStringToBeShownFromData(dataToBeDisplayed);
+        displayPanel.setText(String.format("%s = ?", stringToBeShown));
+    }
+
+    @NonNull
+    private String generateStringToBeShownFromData(int[] dataToBeDisplayed) {
         String stringToBeShown = "";
         correctAnswer = 0;
         Random ran = new Random();
-        int firstCount = 0;
+        int numberOfTimesLoopHasRun = 0;
+        //Create the question and the answer
         for (int i : dataToBeDisplayed){
-            String currentChar = "" + i;
-            if (firstCount == 0){
+            String currentValueBeenTakenFromTheArray = "" + i;
+            //If loop is running for the first time then make the first value the correct answer
+            //This is to prevent getting an operator before a number
+            if (numberOfTimesLoopHasRun == 0){
                 correctAnswer = i;
-                stringToBeShown = stringToBeShown.concat(currentChar);
-                firstCount++;
+                stringToBeShown = stringToBeShown.concat(currentValueBeenTakenFromTheArray);
+                numberOfTimesLoopHasRun++;
             }else {
-                currentChar = "" + i;
-                int symbol = ran.nextInt(4) + 1;
-                switch (symbol) {
-                    case 1:
-                        correctAnswer += i;
-                        stringToBeShown = stringToBeShown.concat("+");
-                        stringToBeShown = stringToBeShown.concat(currentChar);
-                        break;
-                    case 2:
-                        correctAnswer -= i;
-                        stringToBeShown = stringToBeShown.concat("-");
-                        stringToBeShown = stringToBeShown.concat(currentChar);
-                        break;
-                    case 3:
-                        correctAnswer *= i;
-                        stringToBeShown = stringToBeShown.concat(" x ");
-                        stringToBeShown = stringToBeShown.concat(currentChar);
-                        break;
-                    case 4:
-                        correctAnswer /= i;
-                        stringToBeShown = stringToBeShown.concat("/");
-                        stringToBeShown = stringToBeShown.concat(currentChar);
-                        break;
-                }
-                Log.d(TAG, "TotalFor: " + correctAnswer);
+                int symbolOfOperator = ran.nextInt(4) + 1;
+                stringToBeShown = getOperatorBeingUsed(stringToBeShown, i, currentValueBeenTakenFromTheArray, symbolOfOperator);
             }
         }
+        return stringToBeShown;
+    }
 
-        displayPanel.setText(String.format("%s = ?", stringToBeShown));
+    private String getOperatorBeingUsed(String stringToBeShown, int i, String currentValueBeenTakenFromTheArray, int symbolOfOperator) {
+        switch (symbolOfOperator) {
+            case 1:
+                correctAnswer += i;
+                stringToBeShown = stringToBeShown.concat("+");
+                stringToBeShown = stringToBeShown.concat(currentValueBeenTakenFromTheArray);
+                break;
+            case 2:
+                correctAnswer -= i;
+                stringToBeShown = stringToBeShown.concat("-");
+                stringToBeShown = stringToBeShown.concat(currentValueBeenTakenFromTheArray);
+                break;
+            case 3:
+                correctAnswer *= i;
+                stringToBeShown = stringToBeShown.concat(" x ");
+                stringToBeShown = stringToBeShown.concat(currentValueBeenTakenFromTheArray);
+                break;
+            case 4:
+                correctAnswer /= i;
+                stringToBeShown = stringToBeShown.concat("/");
+                stringToBeShown = stringToBeShown.concat(currentValueBeenTakenFromTheArray);
+                break;
+        }
+        return stringToBeShown;
     }
 
 
@@ -183,6 +196,7 @@ public class GameActivity extends AppCompatActivity {
         return ran.nextInt(999)+1;
     }
 
+    //Handle hard and soft back button presses
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
@@ -212,14 +226,13 @@ public class GameActivity extends AppCompatActivity {
 
         builder.setPositiveButton("No",new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-
+                //Do nothing if user doesn't want to exit
             }
         }).create();
-
-
         builder.show();
     }
 
+    //Handle title bar actions
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -323,13 +336,13 @@ public class GameActivity extends AppCompatActivity {
 
     private void validateAnswer() {
         String textOnEditText = String.valueOf(answerEntryEditText.getText());
-        String[] partsOfSplittedAnswer = textOnEditText.split("=");
+        String[] partsOfSplitAnswer = textOnEditText.split("=");
         TextView result;
         try{
-            String answerGiven = partsOfSplittedAnswer[1];
+            String answerGiven = partsOfSplitAnswer[1];
             answerGiven = answerGiven.trim();
             int answer = Integer.parseInt(answerGiven);
-            result = ((TextView) findViewById(R.id.textView6));
+            result = ((TextView) findViewById(R.id.result_text));
             if (answer == correctAnswer) {
                 //correct
                 result.setTextColor(Color.GREEN);
@@ -352,7 +365,7 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         }catch (Exception e){
-            result = ((TextView) findViewById(R.id.textView6));
+            result = ((TextView) findViewById(R.id.result_text));
             result.setTextColor(Color.BLUE);
             result.setText(R.string.unanswered);
         }
@@ -360,12 +373,13 @@ public class GameActivity extends AppCompatActivity {
 
     private void calculateScore() {
         int score;
+        //Consider time remaining when answer is presented
         if (timerRemaining == 10){
             score = 100;
-            PlayerManagementClass.player.setScore(PlayerManagementClass.player.getScore()+score);
+            Player.getInstanceOfObject().setScore(Player.getInstanceOfObject().getScore()+score);
         }else{
             score = (100/(10-timerRemaining));
-            PlayerManagementClass.player.setScore(PlayerManagementClass.player.getScore()+score);
+            Player.getInstanceOfObject().setScore(Player.getInstanceOfObject().getScore()+score);
     }}
 
 

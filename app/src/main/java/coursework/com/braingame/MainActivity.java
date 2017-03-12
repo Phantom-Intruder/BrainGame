@@ -13,9 +13,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-
-import static android.content.ContentValues.TAG;
-
 public class MainActivity extends AppCompatActivity {
 
     public static final String SAVED_GAME_PREFERENCES = "SavedGamePreferences" ;
@@ -37,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
+    //Handle back button presses
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
@@ -57,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Main screen button actions
 
-
     public void newGameButtonClicked(View view) {
         Intent intent = new Intent(this, LevelActivity.class);
         startActivity(intent);
@@ -71,12 +69,12 @@ public class MainActivity extends AppCompatActivity {
         boolean hintsOnOrOff = sharedpreferences.getBoolean(HintsStatus, false);
         int score = sharedpreferences.getInt(ScoreLevel, 0);
         Intent intent = new Intent(this, GameActivity.class);
-        //Create a new player from the playerManagementClass, set the data and start the game
-        PlayerManagementClass playerManagementClass = new PlayerManagementClass();
-        playerManagementClass.createPlayer(playerLevel);
-        PlayerManagementClass.player.setHintsOnOrOff(hintsOnOrOff);
-        PlayerManagementClass.player.setQuestionNumber(questionNumber);
-        PlayerManagementClass.player.setScore(score);
+        //Create a new player, set the data and start the game
+        Player.getInstanceOfObject().destroyInstance();
+        Player.getInstanceOfObject().setPlayerLevel(playerLevel);
+        Player.getInstanceOfObject().setHintsOnOrOff(hintsOnOrOff);
+        Player.getInstanceOfObject().setQuestionNumber(questionNumber);
+        Player.getInstanceOfObject().setScore(score);
         startActivity(intent);
     }
 
@@ -121,13 +119,12 @@ public class MainActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(SAVED_GAME_PREFERENCES, Context.MODE_PRIVATE);
         try {
             //Use shared preferences to save the game data
-            String playerLevel = PlayerManagementClass.player.getPlayerLevel();
-            int questionNumber = PlayerManagementClass.player.getQuestionNumber();
-            int score = PlayerManagementClass.player.getScore();
+            String playerLevel = Player.getInstanceOfObject().getPlayerLevel();
+            int questionNumber = Player.getInstanceOfObject().getQuestionNumber();
+            int score = Player.getInstanceOfObject().getScore();
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putString(PlayerLevel, playerLevel);
             editor.putInt(QuestionNumber, questionNumber);
-            //Log.d(TAG, "Hints are on: "+PreferencesActivity.isHintsOnOrOff());
             editor.putBoolean(HintsStatus, PreferencesActivity.isHintsOnOrOff());
             editor.putInt(ScoreLevel, score);
             editor.apply();
